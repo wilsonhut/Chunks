@@ -5,18 +5,33 @@ namespace Wilsonhut.Chunks
 {
 	public static class Extensions
 	{
-		public static IEnumerable<Chunk<T>> ToChunks<T>(this IEnumerable<T> list, int chunkSize)
+		public static IEnumerable<IEnumerable<T>> Chunked<T>(this IEnumerable<T> list, int chunkSize)
 		{
 			var enumerator = list.GetEnumerator();
 
-			for (var i = 0; ; i++)
+			for (;;)
 			{
 				var chunk = enumerator.GetNext(chunkSize);
 				if (chunk.Length == 0)
 				{
 					break;
 				}
-				yield return new Chunk<T>(chunk, i * chunkSize, chunk.Length);
+				yield return chunk;
+			}
+		}
+
+		public static IEnumerable<Chunk<T>> ToChunks<T>(this IEnumerable<T> list, int chunkSize)
+		{
+			var enumerator = list.GetEnumerator();
+
+			for (var i = 0;; i++)
+			{
+				var chunk = enumerator.GetNext(chunkSize);
+				if (chunk.Length == 0)
+				{
+					break;
+				}
+				yield return new Chunk<T>(chunk, i*chunkSize, chunk.Length);
 			}
 		}
 
