@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>Chunks</id>
+    <version>0.0.0</version>
+    <authors>Philip C. Wilson</authors>
+    <owners>Philip C. Wilson</owners>
+    <licenseUrl>https://github.com/wilsonhut/Chunks/raw/master/license.txt</licenseUrl>
+    <projectUrl>http://github.com/wilsonhut/Chunks</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Extension method to Chunk your IEnumerables</description>
+    <tags>Extension_Method,Batch,.NET</tags>
+  </metadata>
+  <files>
+	<file src="build\Wilsonhut.Chunks.dll" target="lib" />
+	<file src="build\Wilsonhut.Chunks.pdb" target="lib" />
+	<file src="src\Chunks\**\*.cs" target="src" />
+</files>
+</package>
