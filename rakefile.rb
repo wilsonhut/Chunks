@@ -46,7 +46,7 @@ namespace :build do
 		mkdir_p "#{ARTIFACTS_PATH}"
 		rm Dir.glob("#{ARTIFACTS_PATH}/*.nupkg")
 		FileList["packaging/nuget/*.nuspec"].each do |spec|
-		sh "#{TOOLS_PATH}/nuget/NuGet.exe pack #{spec} -o #{ARTIFACTS_PATH} -Version #{BUILD_VERSION} -BasePath . -Symbols"
+		sh "\"#{TOOLS_PATH}/nuget/NuGet.exe\" pack #{spec} -o \"#{ARTIFACTS_PATH}\" -Version #{BUILD_VERSION} -BasePath . -Symbols"
 		end
 	end
 
@@ -54,7 +54,7 @@ namespace :build do
 		configatron.packages.each do | package |
 			FEEDS.each do | feed | 
 				!(File.exists?("#{LIB_PATH}/#{package[0]}")) and
-					sh "#{TOOLS_PATH}/nuget/NuGet.exe Install #{package[0]} -Version #{package[1]} -o #{LIB_PATH} -Source #{feed} -ExcludeVersion" do | cmd, results | cmd  end
+					sh "#{TOOLS_PATH}/nuget/NuGet.exe Install #{package[0]} -Version #{package[1]} -o "#{LIB_PATH}" -Source #{feed} -ExcludeVersion" do | cmd, results | cmd  end
 			end
 		end
 	end
