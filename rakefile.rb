@@ -51,13 +51,21 @@ namespace :build do
 	end
 
 	task :dependencies do
-		configatron.packages.each do | package |
-			FEEDS.each do | feed | 
-				!(File.exists?("#{LIB_PATH}/#{package[0]}")) and
-					sh "#{TOOLS_PATH}/nuget/NuGet.exe Install #{package[0]} -Version #{package[1]} -o "#{LIB_PATH}" -Source #{feed} -ExcludeVersion" do | cmd, results | cmd  end
+		feeds = FEEDS.map {|x|"-Source " + x }.join(' ')
+		configatron.packages.each do | name,version |
+			feeds = feeds unless !version
+			packageExists = File.directory?("#{LIB_PATH}/#{name}")
+			versionInfo="#{LIB_PATH}/#{name}/version.info"
+			currentVersion=IO.read(versionInfo) if File.exists?(versionInfo)
+			if(!packageExists or !version or !versionInfo or currentVersion != version) then
+				versionArg = "-Version #{version}" unless !version
+				sh "nuget Install #{name} #{versionArg} -o #{LIB_PATH} #{feeds} -ExcludeVersion" do | ok, results |
+					File.open(versionInfo, 'w') {|f| f.write(version) } unless !ok
+				end
 			end
 		end
-	end
+    end
+
 
 	def copyOutputFiles(fromDir, filePattern, outDir)
 		Dir.glob(File.join(fromDir, filePattern)){|file| 		
